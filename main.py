@@ -11,11 +11,11 @@ import RedditActions
 
 
 # Login with Authorized instance
-reddit = praw.Reddit(client_id = client_id,
-                     client_secret = client_secret,
-                     user_agent = user_agent,
-                     username = username,
-                     password = password)
+reddit = praw.Reddit(client_id=client_id,
+                     client_secret=client_secret,
+                     user_agent=user_agent,
+                     username=username,
+                     password=password)
 
 
 # Proof that it works
@@ -29,13 +29,13 @@ print()
 # Acessing class subreddit
 subreddit = reddit.subreddit("mechanicalMercs")
 
-
-for submissions in subreddit.new(limit=8):
-
+commentCount = 0
+for submissions in subreddit.new(limit=11):
     # Title of post
     print("****Titles****")
     print(submissions.title)
     print(RedditActions.RandomVote(submissions))
+    print()
 
     # Comments of post
     print("****Comments****")
@@ -58,13 +58,16 @@ for submissions in subreddit.new(limit=8):
             # Check if I've been here
             if secondLayerComment.author == "DefNotDrakesBot":
                 print("You already commented")
+                commentCount += 1
                 alreadyReplied = True
-            print()
             print()
 
         # If haven't commented, comment
-        if alreadyReplied is False and comment.body.lower.contains("the"):
-            print(RedditActions.RandomReply(comment))
+        # Reply criteria!
+        if alreadyReplied is False:
+            print(RedditActions.RandomReply(comment, commentCount))
+            commentCount += 1
             print("Commented")
+    print()
     print()
     print()
